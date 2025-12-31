@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reproductor boda</title>
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+
+  #player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #play {
+    font-size: 28px;
+    cursor: pointer;
+    user-select: none;
+    color: #000;
+  }
+
+  #time {
+    font-size: 14px;
+    min-width: 70px;
+    color: #000;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="player">
+  <div id="play">▶</div>
+  <div id="time">0:00 / 0:00</div>
+</div>
+
+<audio id="audio" preload="metadata">
+  <source src="cant_help_falling_in_love 2.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const audio = document.getElementById("audio");
+  const play = document.getElementById("play");
+  const time = document.getElementById("time");
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  play.onclick = () => {
+    if (audio.paused) {
+      audio.play();
+      play.textContent = "❚❚";
+    } else {
+      audio.pause();
+      play.textContent = "▶";
+    }
+  };
+
+  audio.onloadedmetadata = () => {
+    time.textContent = `0:00 / ${formatTime(audio.duration)}`;
+  };
+
+  audio.ontimeupdate = () => {
+    time.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+  };
+
+  audio.onended = () => {
+    play.textContent = "▶";
+  };
+</script>
+
+</body>
+</html>
